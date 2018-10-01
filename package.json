@@ -1,0 +1,26 @@
+{
+  "name": "registry",
+  "version": "1.0.0",
+  "description": "this web app notifies relevant lawyers that particular documnets have been received at the reception",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/n-pretorious/registry-portal.git"
+  },
+  "author": "Pretorious Ndung'u",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/n-pretorious/registry-portal/issues"
+  },
+  "homepage": "https://github.com/n-pretorious/registry-portal#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "ejs": "^2.6.1",
+    "ejs-lint": "^0.3.0",
+    "express": "^4.16.3",
+    "express-validator": "^5.3.0"
+  }
+}
