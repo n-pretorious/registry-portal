@@ -1,23 +1,28 @@
 <% include partials/header %>
   <h1> <%= title %> </h1>
-  <form action="/users/add" method="POST">
-    <label>First Name</label><br>
+  <form method="POST" action="/signup">
+    <label for="fname">First Name</label><br>
     <input type="text" name="fname">
     <br>
-    <label>Last Name</label><br>
+    <label for="lname">Last Name</label><br>
     <input type="text" name="lname">
     <br>
-    <label>Email</label><br>
+    <label for="email">Email</label><br>
     <input type="email" name="email">
     <br>
-    <label>Enter Password</label><br>
-    <input type="text" name="password">
+    <label for="password">Enter Password</label><br>
+    <input type="password" name="password">
     <br>
-    <label>Confirm Password</label><br>
-    <input type="text" name="passwordConfirmation">
+    <label for="passwordConfirmation">Confirm Password</label><br>
+    <input type="password" name="passwordConfirmation">
     <br><br>
-
-    <input type="submit" value="Submit">
+    <button type="submit" name="">REGISTER</button>
   </form>
-<% include partials/footer %>
 
+  <h1>list from database</h1>
+  <ul>
+    <% users.forEach(function(user){ %>
+    <li><%= user.fname %> <%= user.lname %></li>
+    <% }) %>
+  </ul>
+<% include partials/footer %>
