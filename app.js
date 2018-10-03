@@ -20,11 +20,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //Set static path
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.get('/', (res, req) => {
+// home page get request
+app.get('/', (req, res) => {
   res.render('index', {
     title : 'Home'
-  })
-})
+  });
+});
 // user registration get request.
 app.get('/adduser', (req, res) => {
     res.render('createUser', {
