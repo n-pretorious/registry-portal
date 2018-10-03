@@ -1,28 +1,9 @@
 <% include partials/header %>
-  <h1> <%= title %> </h1>
-  <form method="POST" action="/signup">
-    <label for="fname">First Name</label><br>
-    <input type="text" name="fname">
-    <br>
-    <label for="lname">Last Name</label><br>
-    <input type="text" name="lname">
-    <br>
-    <label for="email">Email</label><br>
-    <input type="email" name="email">
-    <br>
-    <label for="password">Enter Password</label><br>
-    <input type="password" name="password">
-    <br>
-    <label for="passwordConfirmation">Confirm Password</label><br>
-    <input type="password" name="passwordConfirmation">
-    <br><br>
-    <button type="submit" name="">REGISTER</button>
-  </form>
-
-  <h1>list from database</h1>
-  <ul>
-    <% users.forEach(function(user){ %>
-    <li><%= user.fname %> <%= user.lname %></li>
-    <% }) %>
-  </ul>
+<% include partials/nav %>
+  <section name="jumbotron"  >
+    <div class="jumbotron text-left">
+        <h1><%= title %></h1>
+        <p>Welcome to Tripleoklaw Advocates</p>
+    </div>
+  </section>
 <% include partials/footer %>
