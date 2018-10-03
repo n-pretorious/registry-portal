@@ -4,7 +4,8 @@ const path = require ('path');
 const { body, validationResult } = require ('express-validator/check');
 const { sanitizeBody } = require ('express-validator/filter');
 const mongojs = require('mongojs');
-const db = mongojs('registry', ['users']);
+const dbUser = mongojs('registry', ['users']); //variable to user table
+const dbTeam = mongojs('registry', ['teams']); //variable to team table
 
 const app = express();
 
@@ -19,17 +20,51 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //Set static path
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.get('/', (req, res) => {
-  db.users.find(function (err, docs) {
+app.get('/', (res, req) => {
+  res.render('index', {
+    title : 'Home'
+  })
+})
+// user registration get request.
+app.get('/adduser', (req, res) => {
+    res.render('createUser', {
+      title : 'Register User'
+    });
+});
+
+// list of users in the database get request.
+app.get('/adduser/users', (req, res) => {
+  dbUser.users.find(function (err, docs) {
     // console.log(docs);
-    res.render('index',{
-      title : 'Registration form',
+    res.render('listuser',{
+      title : 'List of users from DB',
       users : docs
     });
   });
 });
 
-app.post('/signup', [
+// team registration get request.
+app.get('/addteam', (req, res) => {
+  res.render('createTeam', {
+    title : 'Register Team'
+  });
+});
+
+// list of users in the database get request.
+app.get('/addteam/teams', (req, res) => {
+  dbTeam.teams.find(function (err, docs) {
+    // console.log(docs);
+    res.render('listTeam',{
+      title : 'List of users from DB',
+      teams : docs
+    });
+  });
+});
+
+
+// add a new user to the db
+// remember to put the auth in a diff file lin2 67-83
+app.post('/adduser', [
   body('email')
     .isEmail()
     .normalizeEmail(),
@@ -54,18 +89,41 @@ app.post('/signup', [
       fname: req.body.fname,
       lname: req.body.lname,
       email: req.body.email,
+      phoneNo: req.body.phoneNo,
       password: req.body.password,
       passwordConfirmation : req.body.passwordConfirmation
     };
-    // insert users from the signup form
-    db.users.insert(newUser, function (err, result) {
+    // insert new users to database (registerUser.ejs)
+    dbUser.users.insert(newUser, (err, result) => {
       if (err) {
         console.log(err);
       }
-      res.redirect('/');
+      res.redirect('/adduser/users');
     })
   }
 });
+
+app.post('/addteam', (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  } else {
+    let newTeam = {
+      team_no: req.body.team_no,
+      team_name: req.body.team_name
+    };
+    // insert new teams to database (createTeam.ejs)
+    dbTeam.teams.insert(newTeam, (err, result) =>{
+      if (!errors.isEmpty()){
+        return res.status(422).json({ errors: errors.array() });
+      } else {
+        res.redirect ('/addteam/teams')
+      }
+    })
+  }
+});
+// get a resquest of list from the database
+
 
 // local host that the server runs on
 app.listen(3000, () => {
