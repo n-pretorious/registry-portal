@@ -103,7 +103,6 @@ app.get('/logdoc/list', (req, res) => {
 
 
 // add a new user to the db
-// remember to put the auth in a diff file lin2 67-83
 app.post('/adduser', [
     body('email')
     .isEmail()
