@@ -1,0 +1,17 @@
+<% include partials/header %>
+<% include partials/nav %>
+  <section name="jumbotron"  >
+    <div class="jumbotron text-left">
+        <h1><%= title %></h1>
+    </div>
+  </section>
+  <form class="" action="/add-user-team" method="post">
+    <label for="teamID">Team ID</label><br>
+    <input type="number" name="teamID" value="">
+    <br>
+    <label for="userID">User ID</label><br>
+    <input type="text" name="userID" value="">
+    <br><br>
+    <input type="submit" name="submitUserTeam"></input>
+  </form>
+<% include partials/footer %>
