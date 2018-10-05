@@ -1,0 +1,15 @@
+<% include partials/header %>
+<% include partials/nav %>
+  <section name="jumbotron"  >
+    <div class="jumbotron text-left">
+        <h1><%= title %></h1>
+    </div>
+  </section>
+  <ul>
+    <% documents.forEach(function(document) { %>
+    <li> <%= document.date %> <%= document.time %>
+    <%= document.type_of_documet %> <%= document.parties_involved %>
+    <%= document.case_no %> <%= document.drawn_by %></li>
+    <% }) %>
+  </ul>
+<% include partials/footer %>
