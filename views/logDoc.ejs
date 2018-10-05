@@ -1,0 +1,44 @@
+<% include partials/header %>
+<% include partials/nav %>
+  <section>
+      <div class="jumbotron text-left">
+        <h1>title</h1>
+        <p>Welcome to Tripleoklaw Advocates</p>
+      </div>
+  </section>
+  <form class="" action="/logdoc" method="post">
+    <table style="height: 43px;" width="636">
+        <tbody>
+            <tr>
+                <td style="width: 152px;">Date</td>
+                <td style="width: 152px;">Time</td>
+                <td style="width: 152px;">Type of Document</td>
+                <td style="width: 152px;">Parties Involved</td>
+                <td style="width: 152px;">Case No.</td>
+                <td style="width: 152px;">Drawn By</td>
+                <td style="width: 152px;">Team No.</td>
+            </tr>
+            <tr>
+                <td style="width: 152px;"><input type="date" name="date" value=""></td>
+                <td style="width: 152px;"><input type="time" name="time" value=""></td>
+                  <td style="width: 152px;"><input list="documents" name="type_of_documet" value="">
+                    <datalist id="documents">
+                      <option value="Bundle of Costs & Authorities">
+                      <option value="Hearing">
+                      <option value="Mention">
+                      <option value="Taxation">
+                      <option value="Submission">
+                    </datalist>
+                </td>
+                <td style="width: 152px;"><input type="text" name="parties_involved" value=""></td>
+                <td style="width: 152px;"><input type="text" name="case_no" value=""></td>
+                <td style="width: 152px;"><input type="text" name="drawn_by" value=""></td>
+                <td style="width: 152px;"><input type="number" name="team_no" value=""></td>
+
+            </tr>
+        </tbody>
+    </table><br>
+    <input type="submit" name="button"></input>
+  </form>
+
+<% include partials/footer %>
