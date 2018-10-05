@@ -5,9 +5,10 @@
         <h1><%= title %></h1>
     </div>
   </section>
+
   <ul>
     <% teams.forEach(function(team){ %>
-      <li><%= team.team_no %> <%= team.team_name%> </li>
+      <li><%= team.team_no %> <%= team.team_name%> <button type="button" class="userteambtn" name="button"><a href="/add-user-team">assign user</a></button></li>
     <% }) %>
   </ul>
 <% include partials/footer %>
