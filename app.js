@@ -8,6 +8,7 @@ const dbUser = mongojs('registry', ['users']); //variable to user table
 const dbTeam = mongojs('registry', ['teams']); //variable to team table
 const dbTeam_user = mongojs('registry', ['team_users']); //variable to team/user table
 const dbDoc = mongojs('registry', ['documents']); //variable to team/user table
+const mailer = require('express-mailer');
 
 const app = express();
 
@@ -91,7 +92,7 @@ app.get('/logdoc', (req, res) => {
     });
 });
 
-// list of documents
+list of documents
 app.get('/logdoc/list', (req, res) => {
   dbDoc.documents.find(function (err, docs){
     res.render('listDoc', {
@@ -100,6 +101,30 @@ app.get('/logdoc/list', (req, res) => {
     });
   })
 });
+
+// // send email upon log of Docs
+// app.get('/logdoc/list', function (req, res) {
+//   res.mailer.send ('email', {
+//     to: 'fmunyao@tripleoklaw.com',
+//     subject: 'Preto\'s app Test Email'
+//     // otherProperty: 'Other Property'
+//   }, function (err, message) {
+//     if (err) {
+//       // handle error
+//       console.log(err);
+//       res.send('There was an error rendering the email');
+//       return;
+//     }
+//     // res.header('Content-Type', 'text/plain');
+//     // res.send(message);
+//     dbDoc.documents.find(function (err, docs){
+//       res.render('listDoc', {
+//         title : 'list of documents',
+//         documents : docs
+//         });
+//     });
+//   });
+// });
 
 
 // add a new user to the db
@@ -229,4 +254,4 @@ app.post('/logdoc', (req, res) => {
 // local host that the server runs on
 app.listen(3000, () => {
     console.log('server running on port 3000');
-})
+});
