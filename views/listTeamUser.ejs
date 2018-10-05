@@ -1,0 +1,13 @@
+<% include partials/header %>
+<% include partials/nav %>
+  <section name="jumbotron"  >
+    <div class="jumbotron text-left">
+        <h1><%= title %></h1>
+    </div>
+  </section>
+  <ul>
+    <% team_users.forEach(function(team_user) { %>
+    <li><%= team_user.teamID %> <%= team_user.userID%></li>
+    <% }) %>
+  </ul>
+<% include partials/footer %>
