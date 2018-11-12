@@ -10,122 +10,21 @@ const dbTeam_user = mongojs('registry', ['team_users']); //variable to team/user
 const dbDoc = mongojs('registry', ['documents']); //variable to team/user table
 const mailer = require('express-mailer');
 
+const routes = require('./routes/index')
+
 const app = express();
 
 // view engine
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
 
-// body-parse mildware
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({
-    extended: false
-}));
-
-//Set static path
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.static(path.join(__dirname, 'public')))
 
-// home page get request
-app.get('/', (req, res) => {
-    res.render('index', {
-        title : 'Home'
-    });
-});
-// user registration get request.
-app.get('/adduser', (req, res) => {
-    res.render('createUser', {
-        title : 'Register User'
-    });
-});
-
-// list of users in the database get request.
-app.get('/adduser/users', (req, res) => {
-    dbUser.users.find(function(err, docs) {
-        // console.log(docs);
-        res.render('listuser', {
-            title : 'List of users from DB',
-            users : docs
-        });
-    });
-});
-
-// team registration get request.
-app.get('/addteam', (req, res) => {
-    res.render('createTeam', {
-        title : 'Register Team'
-    });
-});
-
-// list of users in the database get request.
-app.get('/addteam/teams', (req, res) => {
-    dbTeam.teams.find(function(err, docs) {
-        // console.log(docs);
-        res.render('listTeam', {
-            title : 'List of users from DB',
-            teams : docs
-        });
-    });
-});
-
-// user to team registration get request
-app.get('/add-user-team', (req, res) => {
-  res.render('addUserToTeam', {
-    title : 'assign a user to a team'
-  });
-});
-
-// list of teams and users
-app.get('/add-user-team/team-user', (req, res) => {
-  dbTeam_user.team_users.find( function (err, docs) {
-    // console.log(docs);
-    res.render('listTeamUser', {
-      title : 'list of teams and users in each team',
-      team_users : docs
-    });
-  });
-});
-
-// logs documents received at the reception
-app.get('/logdoc', (req, res) => {
-    res.render('logDoc', {
-        title: 'Log documents here'
-    });
-});
-
-list of documents
-app.get('/logdoc/list', (req, res) => {
-  dbDoc.documents.find(function (err, docs){
-    res.render('listDoc', {
-      title : 'list of documents',
-      documents : docs
-    });
-  })
-});
-
-// // send email upon log of Docs
-// app.get('/logdoc/list', function (req, res) {
-//   res.mailer.send ('email', {
-//     to: 'fmunyao@tripleoklaw.com',
-//     subject: 'Preto\'s app Test Email'
-//     // otherProperty: 'Other Property'
-//   }, function (err, message) {
-//     if (err) {
-//       // handle error
-//       console.log(err);
-//       res.send('There was an error rendering the email');
-//       return;
-//     }
-//     // res.header('Content-Type', 'text/plain');
-//     // res.send(message);
-//     dbDoc.documents.find(function (err, docs){
-//       res.render('listDoc', {
-//         title : 'list of documents',
-//         documents : docs
-//         });
-//     });
-//   });
-// });
-
+//initialize the route handling
+//check .routes/index.js to get a list of all routes
+app.use('/', routes);
 
 // add a new user to the db
 app.post('/adduser', [
@@ -236,7 +135,7 @@ app.post('/logdoc', (req, res) => {
           parties_involved: req.body.parties_involved,
           case_no: req.body.case_no,
           drawn_by: req.body.drawn_by,
-          team_no: req.body.team_no
+          team_no: req.body.team_no,
       };
       // assign a new user to a team (addUserToTeam.ejs)
       dbDoc.documents.insert(newDoc, (err, result) => {
