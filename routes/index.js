@@ -1,6 +1,6 @@
 const express = require ('express')
 const router = express.Router()
-const sanitizerEmail = require('./controls/auth.js')
+const sanitizeEmail = require('./controls/auth.js')
 
 
 router.get('/', (req, res) => {res.render('index', {title : 'Home'}) })
@@ -18,7 +18,7 @@ router.get('/logdoc', (req, res) => {res.render('logDoc', {title: 'Log documents
 router.get('/logdoc/list', (req, res) => {dbDoc.documents.find(function (err, docs){res.render('listDoc', {title : 'list of documents', documents : docs    })})})
 
 // add a new user to the db
-router.post('/adduser', sanitizerEmail , (req, res) => {
+router.post('/adduser', sanitizeEmail , (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
