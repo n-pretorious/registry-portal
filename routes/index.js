@@ -1,6 +1,16 @@
 const express = require ('express')
 const router = express.Router()
-const sanitizeEmail = require('./controls/auth.js')
+const sanitizeReg = require('/controls/auth.js')
+const { body, validationResult } = require('express-validator/check');
+const { sanitizeBody } = require('express-validator/filter');
+const mongojs = require('mongojs');
+const db = mongojs('registry')
+const userCollection = db('users'); //variable to user table
+const teamCollection = db('teams'); //variable to team table
+const teamUsersCollection = db('team_users'); //variable to team/user table
+const documentCollection = db('documents'); //variable to team/user table
+const mailer = require('express-mailer');
+const pushid = require('pushid')
 
 
 router.get('/', (req, res) => {res.render('index', {title : 'Home'}) })
@@ -18,7 +28,7 @@ router.get('/logdoc', (req, res) => {res.render('logDoc', {title: 'Log documents
 router.get('/logdoc/list', (req, res) => {dbDoc.documents.find(function (err, docs){res.render('listDoc', {title : 'list of documents', documents : docs    })})})
 
 // add a new user to the db
-router.post('/adduser', sanitizeEmail , (req, res) => {
+router.post('/adduser', sanitizeReg, (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
@@ -26,6 +36,7 @@ router.post('/adduser', sanitizeEmail , (req, res) => {
         });
     } else {
         let newUser = {
+            userId: pushid(),
             fname: req.body.fname,
             lname: req.body.lname,
             email: req.body.email,
@@ -34,7 +45,7 @@ router.post('/adduser', sanitizeEmail , (req, res) => {
             passwordConfirmation: req.body.passwordConfirmation
         };
         // insert new users to database (registerUser.ejs)
-        dbUser.users.insert(newUser, (err, result) => {
+        userCollection.users.insert(newUser, (err, result) => {
             if (err) {
                 console.log(err);
             }
@@ -52,11 +63,12 @@ router.post('/addteam', (req, res) => {
         });
     } else {
         let newTeam = {
+            team_id: pushid(),
             team_no: req.body.team_no,
             team_name: req.body.team_name
         };
         // insert new teams to database (createTeam.ejs)
-        dbTeam.teams.insert(newTeam, (err, result) => {
+        teamCollection.teams.insert(newTeam, (err, result) => {
             if (!errors.isEmpty()) {
                 return res.status(422).json({
                     errors: errors.array()
@@ -81,7 +93,7 @@ router.post('/add-user-team', (req, res) => {
           userID: req.body.userID
       };
       // assign a new user to a team (addUserToTeam.ejs)
-      dbTeam_user.team_users.insert(newUserToTeam, (err, result) => {
+      teamUsersCollection.team_users.insert(newUserToTeam, (err, result) => {
           if (!errors.isEmpty()) {
               return res.status(422).json({
                   errors: errors.array()
@@ -102,6 +114,7 @@ router.post('/logdoc', (req, res) => {
       });
   } else {
       let newDoc = {
+          document_id: pushid(),
           date: req.body.date,
           time: req.body.time,
           type_of_documet: req.body.type_of_documet,
@@ -111,7 +124,7 @@ router.post('/logdoc', (req, res) => {
           team_no: req.body.team_no,
       };
       // assign a new user to a team (addUserToTeam.ejs)
-      dbDoc.documents.insert(newDoc, (err, result) => {
+      documentCollection.documents.insert(newDoc, (err, result) => {
           if (!errors.isEmpty()) {
               return res.status(422).json({
                   errors: errors.array()
